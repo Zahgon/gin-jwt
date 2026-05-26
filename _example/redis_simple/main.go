@@ -160,12 +160,4 @@ func main() {
 	}
 }
 
-func helloHandler(c *gin.Context) {
-	claims := jwt.ExtractClaims(c)
-	user, _ := c.Get(identityKey)
-	c.JSON(200, gin.H{
-		"userID":   claims[identityKey],
-		"userName": user.(*User).UserName,
-		"text":     "Hello World.",
-	})
-}
+func helloHandler(c *gin.Context) { _ = "STUB: not implemented"; return }

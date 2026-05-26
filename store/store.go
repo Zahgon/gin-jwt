@@ -19,6 +19,4 @@ var (
 
 // Default creates a default memory-based token store
 // This is the recommended way to create a store with sensible defaults
-func Default() core.TokenStore {
-	return NewMemoryStore()
-}
+func Default() core.TokenStore { _ = "STUB: not implemented"; return *new(core.TokenStore) }

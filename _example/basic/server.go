@@ -66,134 +66,41 @@ func main() {
 }
 
 func registerRoute(r *gin.Engine, handle *jwt.GinJWTMiddleware) {
+	_ = "STUB: not implemented"
 	// Public routes
-	r.POST("/login", handle.LoginHandler)
-	r.POST("/refresh", handle.RefreshHandler) // RFC 6749 compliant refresh endpoint
-
-	r.NoRoute(handle.MiddlewareFunc(), handleNoRoute())
-
-	// Protected routes
-	auth := r.Group("/auth", handle.MiddlewareFunc())
-	auth.GET("/hello", helloHandler)
-	auth.POST("/logout", handle.LogoutHandler) // Logout with refresh token revocation
+	return
 }
 
-func initParams() *jwt.GinJWTMiddleware {
-	return &jwt.GinJWTMiddleware{
-		Realm:       "test zone",
-		Key:         []byte("secret key"),
-		Timeout:     time.Hour,
-		MaxRefresh:  time.Hour,
-		IdentityKey: identityKey,
-		PayloadFunc: payloadFunc(),
+// RFC 6749 compliant refresh endpoint
 
-		IdentityHandler: identityHandler(),
-		Authenticator:   authenticator(),
-		Authorizer:      authorizator(),
-		Unauthorized:    unauthorized(),
-		LogoutResponse:  logoutResponse(),
-		TokenLookup:     "header: Authorization, query: token, cookie: jwt",
-		// TokenLookup: "query:token",
-		// TokenLookup: "cookie:token",
-		TokenHeadName: "Bearer",
-		TimeFunc:      time.Now,
-	}
-}
+// Protected routes
 
-func payloadFunc() func(data any) gojwt.MapClaims {
-	return func(data any) gojwt.MapClaims {
-		if v, ok := data.(*User); ok {
-			return gojwt.MapClaims{
-				identityKey: v.UserName,
-			}
-		}
-		return gojwt.MapClaims{}
-	}
-}
+// Logout with refresh token revocation
 
-func identityHandler() func(c *gin.Context) any {
-	return func(c *gin.Context) any {
-		claims := jwt.ExtractClaims(c)
-		return &User{
-			UserName: claims[identityKey].(string),
-		}
-	}
-}
+func initParams() *jwt.GinJWTMiddleware { _ = "STUB: not implemented"; return nil }
 
-func authenticator() func(c *gin.Context) (any, error) {
-	return func(c *gin.Context) (any, error) {
-		var loginVals login
-		if err := c.ShouldBind(&loginVals); err != nil {
-			return "", jwt.ErrMissingLoginValues
-		}
-		userID := loginVals.Username
-		password := loginVals.Password
+// TokenLookup: "query:token",
+// TokenLookup: "cookie:token",
 
-		if (userID == userAdmin && password == userAdmin) ||
-			(userID == "test" && password == "test") {
-			return &User{
-				UserName:  userID,
-				LastName:  "Bo-Yi",
-				FirstName: "Wu",
-			}, nil
-		}
-		return nil, jwt.ErrFailedAuthentication
-	}
-}
+func payloadFunc() func(data any) gojwt.MapClaims { _ = "STUB: not implemented"; return nil }
 
-func authorizator() func(c *gin.Context, data any) bool {
-	return func(c *gin.Context, data any) bool {
-		if v, ok := data.(*User); ok && v.UserName == "admin" {
-			return true
-		}
-		return false
-	}
-}
+func identityHandler() func(c *gin.Context) any { _ = "STUB: not implemented"; return nil }
+
+func authenticator() func(c *gin.Context) (any, error) { _ = "STUB: not implemented"; return nil }
+
+func authorizator() func(c *gin.Context, data any) bool { _ = "STUB: not implemented"; return nil }
 
 func unauthorized() func(c *gin.Context, code int, message string) {
-	return func(c *gin.Context, code int, message string) {
-		c.JSON(code, gin.H{
-			"code":    code,
-			"message": message,
-		})
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func logoutResponse() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		// This demonstrates that claims are now accessible during logout
-		claims := jwt.ExtractClaims(c)
-		user, exists := c.Get(identityKey)
+func logoutResponse() func(c *gin.Context) { _ = "STUB: not implemented"; return nil }
 
-		response := gin.H{
-			"code":    http.StatusOK,
-			"message": "Successfully logged out",
-		}
+// This demonstrates that claims are now accessible during logout
 
-		// Show that we can access user information during logout
-		if len(claims) > 0 {
-			response["logged_out_user"] = claims[identityKey]
-		}
-		if exists {
-			response["user_info"] = user.(*User).UserName
-		}
+// Show that we can access user information during logout
 
-		c.JSON(http.StatusOK, response)
-	}
-}
+func handleNoRoute() func(c *gin.Context) { _ = "STUB: not implemented"; return nil }
 
-func handleNoRoute() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
-	}
-}
-
-func helloHandler(c *gin.Context) {
-	claims := jwt.ExtractClaims(c)
-	user, _ := c.Get(identityKey)
-	c.JSON(200, gin.H{
-		"userID":   claims[identityKey],
-		"userName": user.(*User).UserName,
-		"text":     "Hello World.",
-	})
-}
+func helloHandler(c *gin.Context) { _ = "STUB: not implemented"; return }

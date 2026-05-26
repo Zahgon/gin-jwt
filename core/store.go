@@ -46,9 +46,7 @@ type RefreshTokenData struct {
 }
 
 // IsExpired checks if the token data has expired
-func (r *RefreshTokenData) IsExpired() bool {
-	return time.Now().After(r.Expiry)
-}
+func (r *RefreshTokenData) IsExpired() bool { _ = "STUB: not implemented"; return false }
 
 // Token represents a complete JWT token pair with metadata
 type Token struct {
@@ -60,6 +58,4 @@ type Token struct {
 }
 
 // ExpiresIn returns the number of seconds until the access token expires
-func (t *Token) ExpiresIn() int64 {
-	return t.ExpiresAt - time.Now().Unix()
-}
+func (t *Token) ExpiresIn() int64 { _ = "STUB: not implemented"; return 0 }

@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	jwt "github.com/appleboy/gin-jwt/v3"
@@ -135,71 +134,44 @@ func main() {
 	}
 }
 
-func helloHandler(c *gin.Context) {
-	claims := jwt.ExtractClaims(c)
-	user, _ := c.Get(identityKey)
-	c.JSON(200, gin.H{
-		"userID":   claims[identityKey],
-		"userName": user.(*User).UserName,
-		"text":     "Hello World.",
-	})
-}
+func helloHandler(c *gin.Context) { _ = "STUB: not implemented"; return }
 
 // createTLSConfig creates a TLS configuration for Redis connection
 func createTLSConfig() *tls.Config {
+	_ = "STUB: not implemented"
 	// Example 1: Basic TLS with system CA certificates
-	tlsConfig := &tls.Config{
-		MinVersion: tls.VersionTLS12,
-		MaxVersion: tls.VersionTLS13,
-	}
-
-	// Example 2: TLS with custom CA certificate (uncomment to use)
-	// caCert, err := os.ReadFile("/path/to/ca.crt")
-	// if err != nil {
-	// 	log.Fatalf("Failed to read CA certificate: %v", err)
-	// }
-	//
-	// caCertPool := x509.NewCertPool()
-	// if !caCertPool.AppendCertsFromPEM(caCert) {
-	// 	log.Fatal("Failed to parse CA certificate")
-	// }
-	//
-	// tlsConfig.RootCAs = caCertPool
-
-	// Example 3: TLS with client certificate (mutual TLS) (uncomment to use)
-	// cert, err := tls.LoadX509KeyPair("/path/to/client.crt", "/path/to/client.key")
-	// if err != nil {
-	// 	log.Fatalf("Failed to load client certificate: %v", err)
-	// }
-	//
-	// tlsConfig.Certificates = []tls.Certificate{cert}
-
-	// Example 4: Skip certificate verification (NOT recommended for production)
-	// tlsConfig.InsecureSkipVerify = true
-
-	return tlsConfig
+	return nil
 }
+
+// Example 2: TLS with custom CA certificate (uncomment to use)
+// caCert, err := os.ReadFile("/path/to/ca.crt")
+// if err != nil {
+// 	log.Fatalf("Failed to read CA certificate: %v", err)
+// }
+//
+// caCertPool := x509.NewCertPool()
+// if !caCertPool.AppendCertsFromPEM(caCert) {
+// 	log.Fatal("Failed to parse CA certificate")
+// }
+//
+// tlsConfig.RootCAs = caCertPool
+
+// Example 3: TLS with client certificate (mutual TLS) (uncomment to use)
+// cert, err := tls.LoadX509KeyPair("/path/to/client.crt", "/path/to/client.key")
+// if err != nil {
+// 	log.Fatalf("Failed to load client certificate: %v", err)
+// }
+//
+// tlsConfig.Certificates = []tls.Certificate{cert}
+
+// Example 4: Skip certificate verification (NOT recommended for production)
+// tlsConfig.InsecureSkipVerify = true
 
 // Example helper function to load custom CA certificate
-func loadCACertificate(caPath string) *x509.CertPool {
-	caCert, err := os.ReadFile(caPath)
-	if err != nil {
-		log.Fatalf("Failed to read CA certificate: %v", err)
-	}
-
-	caCertPool := x509.NewCertPool()
-	if !caCertPool.AppendCertsFromPEM(caCert) {
-		log.Fatal("Failed to parse CA certificate")
-	}
-
-	return caCertPool
-}
+func loadCACertificate(caPath string) *x509.CertPool { _ = "STUB: not implemented"; return nil }
 
 // Example helper function to load client certificate for mutual TLS
 func loadClientCertificate(certPath, keyPath string) tls.Certificate {
-	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
-	if err != nil {
-		log.Fatalf("Failed to load client certificate: %v", err)
-	}
-	return cert
+	_ = "STUB: not implemented"
+	return *new(tls.Certificate)
 }

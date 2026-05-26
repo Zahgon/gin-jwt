@@ -2,7 +2,6 @@ package store
 
 import (
 	"context"
-	"errors"
 	"sync"
 	"time"
 
@@ -21,9 +20,8 @@ type InMemoryRefreshTokenStore struct {
 
 // NewInMemoryRefreshTokenStore creates a new in-memory refresh token store
 func NewInMemoryRefreshTokenStore() *InMemoryRefreshTokenStore {
-	return &InMemoryRefreshTokenStore{
-		tokens: make(map[string]*core.RefreshTokenData),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Set stores a refresh token with associated user data and expiration
@@ -33,113 +31,48 @@ func (s *InMemoryRefreshTokenStore) Set(
 	userData any,
 	expiry time.Time,
 ) error {
-	if token == "" {
-		return errors.New("token cannot be empty")
-	}
-
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	s.tokens[token] = &core.RefreshTokenData{
-		UserData: userData,
-		Expiry:   expiry,
-		Created:  time.Now(),
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Get retrieves user data associated with a refresh token
 func (s *InMemoryRefreshTokenStore) Get(ctx context.Context, token string) (any, error) {
-	if token == "" {
-		return nil, ErrRefreshTokenNotFound
-	}
-
-	s.mu.RLock()
-	data, exists := s.tokens[token]
-	s.mu.RUnlock()
-
-	if !exists {
-		return nil, core.ErrRefreshTokenNotFound
-	}
-
-	if data.IsExpired() {
-		// Clean up expired token
-		s.mu.Lock()
-		delete(s.tokens, token)
-		s.mu.Unlock()
-		return nil, core.ErrRefreshTokenNotFound
-	}
-
-	return data.UserData, nil
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
+
+// Clean up expired token
 
 // Delete removes a refresh token from storage
 func (s *InMemoryRefreshTokenStore) Delete(ctx context.Context, token string) error {
-	if token == "" {
-		return nil // No error for empty token deletion
-	}
-
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	delete(s.tokens, token)
+	_ = "STUB: not implemented"
 	return nil
+
+	// No error for empty token deletion
 }
 
 // Cleanup removes expired tokens and returns the number of tokens cleaned up
 func (s *InMemoryRefreshTokenStore) Cleanup(ctx context.Context) (int, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	var cleaned int
-	now := time.Now()
-
-	for token, data := range s.tokens {
-		if now.After(data.Expiry) {
-			delete(s.tokens, token)
-			cleaned++
-		}
-	}
-
-	return cleaned, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Count returns the total number of active refresh tokens
 func (s *InMemoryRefreshTokenStore) Count(ctx context.Context) (int, error) {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-
-	return len(s.tokens), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // GetAll returns all active tokens (for debugging/monitoring purposes)
 // Note: This method is not part of the RefreshTokenStorer interface
 // and should be used carefully in production environments
 func (s *InMemoryRefreshTokenStore) GetAll() map[string]*core.RefreshTokenData {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-
-	// Create a copy to prevent external modifications
-	result := make(map[string]*core.RefreshTokenData)
-	for token, data := range s.tokens {
-		if !data.IsExpired() {
-			result[token] = &core.RefreshTokenData{
-				UserData: data.UserData,
-				Expiry:   data.Expiry,
-				Created:  data.Created,
-			}
-		}
-	}
-
-	return result
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Create a copy to prevent external modifications
 
 // Clear removes all tokens from the store (useful for testing)
 // Note: This method is not part of the RefreshTokenStorer interface
-func (s *InMemoryRefreshTokenStore) Clear() {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	s.tokens = make(map[string]*core.RefreshTokenData)
-}
+func (s *InMemoryRefreshTokenStore) Clear() { _ = "STUB: not implemented"; return }
